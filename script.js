@@ -169,10 +169,10 @@ function countFeedback() {
     feedback.forEach(feedbackItem => {
         avg += Number(feedbackItem.feedbackRating);
     })
-    avg /= feedback.length
+    avg /= feedback.length;
     
     document.querySelector('.count').innerText = `${feedback.length} reviews`;
-    if(avg != 0) {
+    if(avg != 0 && !isNaN(avg)) {
         document.querySelector('.avg').innerText = `Average rating: ${avg.toFixed(1)}`;
     } else {
         document.querySelector('.avg').innerText = `Average rating:`;
