@@ -126,6 +126,7 @@ function addFeedback(feedbackContent, feedbackRating) {
         localStorage.setItem('feedback', JSON.stringify(feedback));
         createElement(obj);
         clickFunctions();
+        countFeedback();
     }
 }
 
@@ -139,6 +140,7 @@ function deleteFeedback(feedbackID) {
 
     localStorage.removeItem('feedback');
     localStorage.setItem('feedback', JSON.stringify(newfeedback));
+    countFeedback();
 }
 
 function updateFeedback(feedbackID, feedbackContent, feedbackRating, feedbackContainer) {
@@ -157,22 +159,33 @@ function updateFeedback(feedbackID, feedbackContent, feedbackRating, feedbackCon
         console.log(feedbackContainer.childNodes[0].childNodes[0])
         feedbackContainer.childNodes[0].childNodes[0].childNodes[0].innerText = feedbackRating;
         feedbackContainer.childNodes[1].childNodes[0].innerText = feedbackContent;
+        countFeedback();
+    }
+}
+
+function countFeedback() {
+    let feedback = getFeedback();
+    let avg = 0;
+    feedback.forEach(feedbackItem => {
+        avg += Number(feedbackItem.feedbackRating);
+    })
+    avg /= feedback.length
+    
+    document.querySelector('.count').innerText = `${feedback.length} reviews`;
+    if(avg != 0) {
+        document.querySelector('.avg').innerText = `Average rating: ${avg.toFixed(1)}`;
+    } else {
+        document.querySelector('.avg').innerText = `Average rating:`;
     }
 }
 
 function showFeedback() {
     let feedback = getFeedback();
-    let avg = 0;
     feedback.forEach(feedbackItem => {
-        avg += Number(feedbackItem.feedbackRating);
         createElement(feedbackItem);
     })
-    
-    document.querySelector('.count').innerText = `${feedback.length} reviews`;
-    document.querySelector('.avg').innerText = `Average rating: ${avg/feedback.length}`;
-
-
 }
 
 showFeedback();
+countFeedback();
 clickFunctions();
